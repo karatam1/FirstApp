@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { SafeAreaView, Text, View, TextInput, Button, StyleSheet } from "react-native";
 import TextInputButton from "../components/TextInputButton";
 import TestComponent from "../components/TestComponent";
+import { renderNode } from "react-native-elements/dist/helpers";
 
 
 function LoginScreen ({navigation}:any){
 
     // hooks
-    const [username, setUsername] = useState('username');
-    const [password, setPassword] = useState('password');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
     // components
@@ -22,6 +23,12 @@ function LoginScreen ({navigation}:any){
 
     const dismissMessage = () => {
         setMessage('');
+    }
+
+    const clearMessage = () =>
+    {
+        handleUsernameChange('');
+        handlePasswordChange('');
     }
 
     const process = () => {
@@ -43,17 +50,26 @@ function LoginScreen ({navigation}:any){
             <TextInput 
                 placeholder="Username" 
                 style={ textInputStyles }
+                value={username}
                 onChangeText = {handleUsernameChange}
             />
             <TextInput 
                 placeholder="Password" 
                 style={ textInputStyles }
+                value={password}
                 onChangeText ={handlePasswordChange}
+                secureTextEntry
             />
-            <Button
-                onPress={process}
-                title="Verify"
-            />
+            <View style = {buttonStyles.position}>
+                <Button
+                    onPress={process}
+                    title="Verify"
+                />
+                <Button
+                    onPress={clearMessage}
+                    title="Clear"
+                />
+            </View>
             {message !== '' && (
                 <View style = {buttonStyles.container}>
                     <Text>{message}</Text>
@@ -72,7 +88,8 @@ function LoginScreen ({navigation}:any){
 
 const safeAreaViewStyles = {
     flex: 1,
-    justifyContext: 'center'
+    justifyContext: 'center',
+    padding: 10,
 };
 
 const loginTextStyles = {
@@ -92,6 +109,12 @@ const buttonStyles = StyleSheet.create({
       flex: 1,
       alignItems: 'flex-start',
     },
+    position:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+    }
+
   });
 
 export default LoginScreen;
